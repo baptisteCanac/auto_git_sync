@@ -1,47 +1,53 @@
 import subprocess
+import logging
 
 from config import *
+
+# Configuration du fichier de logs unique
+logging.basicConfig(
+    filename="logs.log",  # Un seul fichier pour tous les logs
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 class WifiManager:
     def __init__(self):
         self.nom_reseau = nom_reseau
-        self.mpd_reseau = mot_de_passe_reseau
+        self.mdp_reseau = mot_de_passe_reseau
 
     def activer_wifi(self):
-        print("Activation du wifi en cours")
+        logging.info("Tentative d'activation du Wi-Fi...")
         try:
             if systeme == "Linux":
-                print("Système détecté: Linux")
+                logging.info("Système détecté: Linux")
                 subprocess.run(["nmcli", "radio", "wifi", "on"], check=True)
-                print("wifi activé")
             elif systeme == "Darwin":
-                print("Système détecté: MacOs")
+                logging.info("Système détecté: MacOS")
                 subprocess.run(["networksetup", "-setairportpower", "en0", "on"], check=True)
-                print("wifi activé")
-        except:
-            print("Erreur: impossible d'activer le wifi")
-    
+            logging.info("Wi-Fi activé avec succès.")
+        except Exception as e:
+            logging.error(f"Erreur lors de l'activation du Wi-Fi : {e}")
+
     def desactiver_wifi(self):
-        print("Désactivation du wifi")
+        logging.info("Tentative de désactivation du Wi-Fi...")
         try:
             if systeme == "Linux":
-                print("Systeme détecté: Linux")
-                print("fonction pas encore implémentée pour linux")
+                logging.info("Système détecté: Linux")
+                logging.warning("Désactivation du Wi-Fi non implémentée pour Linux.")
             elif systeme == "Darwin":
-                print("Système détecté: MacOs")
-                subprocess.run(["networksetup", "-setairportpower", "en0", "off"])
-                print("Wifi désactivé avec succès")
-        except:
-            print("Erreur: impossible de désactiver le wifi")
-    
+                logging.info("Système détecté: MacOS")
+                subprocess.run(["networksetup", "-setairportpower", "en0", "off"], check=True)
+                logging.info("Wi-Fi désactivé avec succès.")
+        except Exception as e:
+            logging.error(f"Erreur lors de la désactivation du Wi-Fi : {e}")
+
     def se_connecter(self):
-        print("Connexion au wifi")
+        logging.info(f"Tentative de connexion au réseau : {self.nom_reseau}")
         try:
             if systeme == "Linux":
-                subprocess.run(["nmcli", "dev", "wifi", "connect", self.nom_reseau, "password", self.mdp_reseau])
-                print("Connection au réseau effectuée avec succès")
+                subprocess.run(["nmcli", "dev", "wifi", "connect", self.nom_reseau, "password", self.mdp_reseau], check=True)
             elif systeme == "Darwin":
-                subprocess.run(["networksetup", "-setairportnetwork", "en0", self.nom_reseau, self.mdp_reseau])
-                print("Connection au réseau effectuée avec succès")
-        except:
-            print("Impossible de se connecter au réseau\nLe réseau est peut être déja connecté sinon votre fichier de config possede une erreur")
+                subprocess.run(["networksetup", "-setairportnetwork", "en0", self.nom_reseau, self.mdp_reseau], check=True)
+            logging.info(f"Connexion réussie au réseau : {self.nom_reseau}")
+        except Exception as e:
+            logging.error(f"Impossible de se connecter au réseau {self.nom_reseau} : {e}")
