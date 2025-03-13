@@ -32,3 +32,10 @@ class WifiManager:
                 print("Wifi désactivé avec succès")
         except:
             print("Erreur: impossible de désactiver le wifi")
+    
+    def se_connecter(self):
+        print("Connexion au wifi")
+        try:
+            print("La fonction de connexion n'est pas encore implémentée")
+        except:
+            print("Impossible de se connecter au réseau\nLe réseau est peut être déja connecté sinon votre fichier de config possede une erreur")
