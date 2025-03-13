@@ -4,7 +4,8 @@ from config import *
 
 class WifiManager:
     def __init__(self):
-        pass
+        self.nom_reseau = nom_reseau
+        self.mpd_reseau = mot_de_passe_reseau
 
     def activer_wifi(self):
         print("Activation du wifi en cours")
@@ -36,6 +37,11 @@ class WifiManager:
     def se_connecter(self):
         print("Connexion au wifi")
         try:
-            print("La fonction de connexion n'est pas encore implémentée")
+            if systeme == "Linux":
+                subprocess.run(["nmcli", "dev", "wifi", "connect", self.nom_reseau, "password", self.mdp_reseau])
+                print("Connection au réseau effectuée avec succès")
+            elif systeme == "Darwin":
+                subprocess.run(["networksetup", "-setairportnetwork", "en0", self.nom_reseau, self.mdp_reseau])
+                print("Connection au réseau effectuée avec succès")
         except:
             print("Impossible de se connecter au réseau\nLe réseau est peut être déja connecté sinon votre fichier de config possede une erreur")

@@ -1,6 +1,9 @@
 import tkinter as tk
 
+import time
+
 from wifi_manager import WifiManager
+from github_manager import GithubManager
 
 def show_popup():
     global popup
@@ -37,13 +40,15 @@ def main():
     Désactiver le wifi
     """
     
-    """
     WifiManager().activer_wifi()
 
     WifiManager().se_connecter()
 
-    WifiManager().desactiver_wifi()
-    """
+    time.sleep(10)
+
+    GithubManager().execute_workflow()
+
+    #WifiManager().desactiver_wifi()
 
     # Fermer la pop-up une fois `test()` terminé
     close_popup()
