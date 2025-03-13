@@ -37,7 +37,7 @@ def main():
     Désactiver le wifi
     """
 
-    WifiManager().activer_wifi()
+    WifiManager().desactiver_wifi()
 
     # Fermer la pop-up une fois `test()` terminé
     close_popup()
